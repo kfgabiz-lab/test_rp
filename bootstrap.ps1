@@ -56,13 +56,13 @@ if (-not (Get-Command java -ErrorAction SilentlyContinue)) {
     Write-Host "  Already installed" -ForegroundColor Green
 }
 
-Write-Host "[4/$total] Maven" -ForegroundColor Cyan
-if (-not (Get-Command mvn -ErrorAction SilentlyContinue)) {
-    choco install maven -y --no-progress
+Write-Host "[4/$total] Gradle" -ForegroundColor Cyan
+if (-not (Get-Command gradle -ErrorAction SilentlyContinue)) {
+    choco install gradle -y --no-progress
     Refresh-Path
     Write-Host "  Installed" -ForegroundColor Green
 } else {
-    Write-Host "  Already installed" -ForegroundColor Green
+    Write-Host "  Already installed: $(gradle --version 2>&1 | Select-String 'Gradle')" -ForegroundColor Green
 }
 
 Write-Host "[5/$total] Node.js" -ForegroundColor Cyan
@@ -74,7 +74,7 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
     Write-Host "  Already installed: $(node --version)" -ForegroundColor Green
 }
 
-Write-Host "[6/$total] Clone repo + npm install" -ForegroundColor Cyan
+Write-Host "[6/$total] Clone repo + install dependencies" -ForegroundColor Cyan
 if (Test-Path $InstallDir) {
     Write-Host "  Directory exists: $InstallDir - running git pull"
     Set-Location $InstallDir
@@ -84,6 +84,10 @@ if (Test-Path $InstallDir) {
     git clone $RepoUrl $InstallDir
     Set-Location $InstallDir
 }
+
+Write-Host "  Generating Gradle wrapper (backend)..."
+Set-Location "$InstallDir\backend"
+gradle wrapper
 
 Write-Host "  npm install (frontend-3001)..."
 Set-Location "$InstallDir\frontend-3001"

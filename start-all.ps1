@@ -11,7 +11,7 @@ function Start-Service([string]$name, [string]$dir, [string]$cmd) {
 Write-Host ""
 Write-Host "Starting services..." -ForegroundColor White
 
-Start-Service "Backend :8080"    "$root\backend"       "mvn spring-boot:run"
+Start-Service "Backend :8080"    "$root\backend"       ".\gradlew.bat bootRun"
 Write-Host "  [OK] Backend    :8080" -ForegroundColor Green
 Start-Sleep -Seconds 3
 
