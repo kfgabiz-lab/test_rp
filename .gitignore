@@ -1,0 +1,13 @@
+# Node
+node_modules/
+.next/
+.env
+.env.local
+
+# Maven
+backend/target/
+
+# IDE
+.idea/
+.vscode/
+*.iml
